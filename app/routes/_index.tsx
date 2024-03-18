@@ -86,7 +86,7 @@ export default function Index() {
       className='flex flex-col items-center w-full p-4 h-[100vh] font-mono bg-eigengrauLight text-stone-300'
     >
       <h1 className='text-3xl lowercase font-bold text-center my-4'>
-        Владік вчить японську
+        nihon journey
       </h1>
 
       <div className='flex gap-4 justify-center flex-col items-center w-full flex-1'>
@@ -131,7 +131,7 @@ export default function Index() {
             onClick={getRandomWord}
             className='lowercase px-4 py-2 border-2 rounded-md border-stone-400 text-stone-300'
           >
-            get random word
+            get random word / {wordPairs.length}
           </button>
         </div>
       </div>
@@ -140,14 +140,14 @@ export default function Index() {
       <div className='mt-4'>
         <label
           htmlFor='words'
-          className='lowercase flex items-center text-center'
+          className='gap-4 lowercase flex flex-col items-center text-center'
         >
-          Input your words separated with spaces.
-          <br />
-          Enter 2 words and press <b>{'<Enter>'}</b>
-          <br />
-          <br />
-          Click on selected word to reveal the answer
+          <p>
+            Input your words separated with spaces.
+            <br />
+            Enter 2 words and press <b>{'<Enter>'}</b>
+          </p>
+          <p>Click on selected word to reveal the answer</p>
         </label>
       </div>
 
