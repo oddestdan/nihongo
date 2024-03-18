@@ -37,7 +37,7 @@ interface WordPair {
 
 export default function Index() {
   const [wordPair, setWordPair] = useState('');
-  const [wordPairs, setWordPairs] = useState<WordPair[]>(mockData);
+  const [wordPairs, setWordPairs] = useState<WordPair[]>([]);
   const [chosenWord, setChosenWord] = useState<WordPair>();
   const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
