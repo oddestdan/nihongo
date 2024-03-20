@@ -95,12 +95,14 @@ export default function Main() {
           onChange={changeDictionary}
         />
 
-        <button
+        <Link
           onClick={() => setLastVisitedDictionaryTitle(dictionary)}
-          className='hover:border-stone-500 hover:text-stone-400 lowercase w-fit px-4 py-2 border-2 rounded-md border-stone-400 text-stone-300'
+          to={`/dictionary/${dictionary}`}
         >
-          <Link to={`/dictionary/${dictionary}`}>go</Link>
-        </button>
+          <button className='hover:border-stone-500 hover:text-stone-400 lowercase w-fit px-4 py-2 border-2 rounded-md border-stone-400 text-stone-300'>
+            go
+          </button>
+        </Link>
       </div>
       <div className='flex flex-wrap gap-4'>
         {visibleDictionaries.map((dictionary, i) => (
