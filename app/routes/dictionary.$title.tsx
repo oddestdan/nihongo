@@ -1,12 +1,12 @@
 import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import { ClientOnly } from 'remix-utils/client-only';
-import Main from '~/components/main';
+import Dictionary from '~/components/dictionary';
 import stylesheet from '~/tailwind.css';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'Nihongo' },
-    { name: 'description', content: 'App to learn Hihon words' },
+    { title: 'New Remix App' },
+    { name: 'description', content: 'Welcome to Remix!' },
   ];
 };
 
@@ -25,7 +25,7 @@ export default function Index() {
       className='flex flex-col items-center w-full p-4 h-[100vh] font-mono bg-eigengrauLight text-stone-300'
     >
       <ClientOnly fallback={<div>Only available on client</div>}>
-        {() => <Main />}
+        {() => <Dictionary />}
       </ClientOnly>
     </div>
   );
