@@ -3,21 +3,29 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   addWordPairToDictionary,
   getDictionary,
+  getLastVisitedDictionaryTitle,
+  getVisitedDictionaries,
+  setLastVisitedDictionaryTitle,
 } from '~/components/utils/localStorage';
 import { WordPair } from '~/components/utils/types';
 
 export default function Main() {
-  const [dictionary, setDictionary] = useState('default');
+  const [dictionary, setDictionary] = useState(
+    getLastVisitedDictionaryTitle() || 'default'
+  );
+  const visitedDictionaries = getVisitedDictionaries();
   const [wordPair, setWordPair] = useState('');
   const [chosenWord, setChosenWord] = useState<WordPair>();
   const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
+  const [isGayMode, setIsGayMode] = useState(false);
+  const [isShortList, setIsShortList] = useState(true);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const wordPairs = getDictionary(dictionary);
 
   const changeDictionary = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const wordsWithSpaces = e.target.value;
-    setDictionary(wordsWithSpaces);
+    const dictionaryTitle = e.target.value;
+    setDictionary(dictionaryTitle);
   };
 
   const changeWords = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,22 +66,27 @@ export default function Main() {
     inputRef?.current?.focus();
   }, [inputRef]);
 
+  const visibleDictionaries = isShortList
+    ? visitedDictionaries.slice(0, 3)
+    : visitedDictionaries;
+
+  console.log(visibleDictionaries);
+
   return (
     <>
       <h1 className='text-3xl lowercase font-bold text-center my-4'>
-        nihon journey
+        nihon | mode:{' '}
+        <button
+          className='underline underline-offset-4'
+          onClick={() => setIsGayMode((prev) => !prev)}
+        >
+          {isGayMode ? 'reversed' : 'default'}
+        </button>
       </h1>
 
       {/* Dictionary Selector */}
       <div className='flex gap-4 items-center'>
-        <label htmlFor='dictionary'>
-          <Link
-            className='underline underline-offset-4'
-            to={`/dictionary/${dictionary}`}
-          >
-            dictionary:
-          </Link>
-        </label>
+        <label htmlFor='dictionary'>dictionary:</label>
         <input
           id='dictionary'
           className='bg-eigengrau rounded-md py-2 px-4 text-stone-300 outline-none'
@@ -81,6 +94,33 @@ export default function Main() {
           value={dictionary}
           onChange={changeDictionary}
         />
+
+        <button
+          onClick={() => setLastVisitedDictionaryTitle(dictionary)}
+          className='hover:border-stone-500 hover:text-stone-400 lowercase w-fit px-4 py-2 border-2 rounded-md border-stone-400 text-stone-300'
+        >
+          <Link to={`/dictionary/${dictionary}`}>go</Link>
+        </button>
+      </div>
+      <div className='flex flex-wrap gap-4'>
+        {visibleDictionaries.map((dictionary, i) => (
+          <Link
+            key={dictionary + i}
+            className='underline underline-offset-4 text-stone-400 hover:text-stone-500'
+            onClick={() => setLastVisitedDictionaryTitle(dictionary)}
+            to={`/dictionary/${dictionary}`}
+          >
+            {dictionary}
+          </Link>
+        ))}
+        {visitedDictionaries.length > 3 && (
+          <button
+            onClick={() => setIsShortList(!isShortList)}
+            className='text-stone-400 hover:text-stone-500'
+          >
+            {isShortList ? '...' : '<'}
+          </button>
+        )}
       </div>
 
       {/* Main Picker */}
@@ -92,12 +132,12 @@ export default function Main() {
                 onClick={revealAnswerWord}
                 className={`hover:border-stone-500 hover:text-stone-400 px-4 py-2 text-xl text-stone-300`}
               >
-                {chosenWord?.original}
+                {isGayMode ? chosenWord?.japanese : chosenWord?.original}
               </button>
               {isAnswerRevealed && (
                 <p className={`text-center text-xl`}>
                   {' '}
-                  -- {chosenWord?.japanese}
+                  -- {isGayMode ? chosenWord?.original : chosenWord?.japanese}
                 </p>
               )}
             </>
